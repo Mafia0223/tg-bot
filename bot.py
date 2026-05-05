@@ -4,6 +4,8 @@ from telebot import types
 
 TOKEN = "8661126406:AAHII3H0A1LKJsMKC1XvmACRtVqssVerqM0"
 
+URL = "https://tg-bot-c38c.onrender.com"
+
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
@@ -90,7 +92,7 @@ if __name__ == "__main__":
     bot.remove_webhook()
 
     bot.set_webhook(
-        url=f"https://ТВОЙ-САЙТ.onrender.com/{TOKEN}"
+        url=f"{URL}/{TOKEN}"
     )
 
     app.run(host="0.0.0.0", port=5000)
