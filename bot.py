@@ -160,19 +160,20 @@ def reply(message):
                 ]
             }
 
-            res = requests.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers=headers,
-                json=data
-            )
+           response = requests.post(
+    "https://openrouter.ai/api/v1/chat/completions",
+    headers=headers,
+    json=data
+)
 
-            result = res.json()
+result = response.json()
 
-            answer = result["choices"][0]["message"]["content"]
-            bot.reply_to(message, answer)
+if "choices" not in result:
+    bot.reply_to(message, f"AI ошибка: {result}")
+    return
 
-        except Exception as e:
-            bot.reply_to(message, f"AI ошибка: {e}")
+answer = result["choices"][0]["message"]["content"]
+bot.reply_to(message, answer)
 
     else:
         count += 1
