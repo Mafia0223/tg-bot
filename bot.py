@@ -1,4 +1,3 @@
-```python
 from flask import Flask, request
 import telebot
 from telebot import types
@@ -56,7 +55,6 @@ def disclaimer(message):
 def reply(message):
     global count
 
-    # игнор кнопок
     if message.text in ["📖 Инструкция", "ℹ️ Дисклеймер"]:
         return
 
@@ -67,7 +65,6 @@ def reply(message):
     else:
         bot.reply_to(message, "хз сам решай")
 
-    # реакция 👍
     try:
         bot.set_message_reaction(
             chat_id=message.chat.id,
@@ -97,4 +94,3 @@ if __name__ == "__main__":
     )
 
     app.run(host="0.0.0.0", port=5000)
-```
