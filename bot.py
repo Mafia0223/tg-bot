@@ -53,29 +53,33 @@ def disclaimer(message):
     )
 
 
-@bot.message_handler(func=lambda m: m.text == "🌦 Погода")
-def weather(message):
-    msg = bot.send_message(message.chat.id, "Напиши город:")
-    bot.register_next_step_handler(msg, send_weather)
+import urllib.parse
 
 def send_weather(message):
-    city = message.text
+    city = urllib.parse.quote(message.text.strip())
 
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}&units=metric&lang=ru"
+    url = (
+        "https://api.openweathermap.org/data/2.5/weather"
+        f"?q={city}&appid={WEATHER_API_KEY}&units=metric&lang=ru"
+    )
 
     try:
         data = requests.get(url).json()
 
-        if data.get("cod") != 200:
-            bot.send_message(message.chat.id, "❌ Город не найден")
+        if str(data.get("cod")) != "200":
+            bot.send_message(
+                message.chat.id,
+                "❌ Город не найден (попробуй: Bishkek или Бишкек)"
+            )
             return
 
         temp = data["main"]["temp"]
         desc = data["weather"][0]["description"]
+        name = data["name"]
 
         bot.send_message(
             message.chat.id,
-            f"🌦 Погода в {city}\n\n🌡 {temp}°C\n☁️ {desc}"
+            f"🌦 Погода в {name}\n\n🌡 {temp}°C\n☁️ {desc}"
         )
 
     except Exception as e:
